@@ -1,0 +1,163 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+// creating a node class for linked list
+class Node{
+    public:
+    int data;
+    Node* next;
+
+    //constructor
+    Node(int data){
+        this -> data = data;
+        this -> next = NULL;
+    }
+};
+
+// taking input in ll
+
+Node* takeInput(){
+    Node* head = NULL;
+    Node* tail = NULL;
+
+    int data;
+    cin >> data;
+
+    while(data != -1){
+
+        Node* newNode = new Node(data);
+
+        if (head == NULL){
+            head = newNode;
+            tail = newNode;
+        } else {
+            tail -> next = newNode;
+            tail = tail -> next;
+        }
+        cin >> data;
+    }
+}
+
+// printing a linked list
+void print(Node* head){
+    if (head == NULL){
+        return;
+    }
+    cout << head -> data << " ";
+    head = head -> next;
+    print(head);
+}
+
+// length of ll
+int length(Node* head){
+
+    if(head == NULL){
+        return 0;
+    }
+
+    return length(head -> next) + 1;
+}
+
+// print ith node of linked list
+void printIthNode(int i, Node* head){
+
+    if (head == NULL){
+        return;
+    }
+
+    int count = 1;
+    Node* temp = head;
+
+    while(temp != NULL){
+        if(count == i){
+            count << temp -> data;
+            break;
+        }
+        count++;
+        temp = temp -> next;
+    }
+}
+
+// insert node at ith position
+Node* insertNode(Node* head, int i, int num){
+
+    if(i == 0){
+        Node* newNode = new Node(num);
+        newNode -> next = head;
+        return newNode;
+    }
+
+    int count = 0;
+    Node* temp = head;
+
+    while(i < count-1 && temp != NULL){
+        temp = temp -> next;
+        count++;
+    }
+
+    if (temp != NULL){
+        Node* newNode = new Node(num);
+        newNode -> next = temp -> next;
+        temp -> next = newNode;
+    }
+    return head;
+
+}
+
+// insert node at ith position (Recursively)
+Node* insertNode(Node* head, int i, int num){
+    if (head == NULL){
+        return NULL;
+    }
+
+    if (i == 0){
+        Node* newNode = new Node(num);
+        newNode -> next = head;
+        return newNode;
+    }
+
+    Node* smallHead = insertNode(head -> next, i - 1, num);
+    head -> next = smallHead;
+
+    return head;
+}
+
+// delete node at ith position
+Node* deleteNode(Node* head, int i){
+    if (i == 0){
+        return head -> next;
+    }
+
+    Node* nextNode = head;
+    Node* prevNode = NULL;
+
+    int count = 0;
+    while(count < i-1 && nextNode != NULL){
+        count++;
+        prevNode = nextNode;
+        nextNode = nextNode -> next;
+    }
+
+    if(nextNode != NULL){
+        Node* temp = nextNode -> next;
+        prevNode -> next = temp;
+    }
+
+    return head;
+}
+
+// delete node at ith position (Recursively)
+Node* deleteNodeRec(Node* head, int i){
+    
+    if (head == NULL){
+        return NULL;
+    }
+    
+    if (i == 0){
+        return head -> next;
+    }
+
+    Node* smallHead = deleteNodeRec(head -> next, i - 1);
+    head -> next = smallHead;
+    return head;
+}
